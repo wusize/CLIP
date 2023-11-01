@@ -43,7 +43,7 @@ class CoOp(nn.Module):
         mask.triu_(1)  # zero out the lower diagonal
         return mask
 
-    def encode_text_fast(self, text):    # a trick to speed
+    def encode_text_fast(self, text):    # a trick to speed up forward
         max_len = (text > 0).sum(-1).max().item()
         text = text[:, :max_len]
         x = self.model.token_embedding(text).type(self.model.dtype)  # [batch_size, max_len, d_model]
