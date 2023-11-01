@@ -59,6 +59,11 @@ class CoOp(nn.Module):
 
         return x
 
+    @property
+    def device(self)
+        return next(self.parameters()).device
+    
+
     def encode_text_with_prompt(self, text, prompt):
         # text: bs ctx_len
         max_len = (text > 0).sum(-1).max().item()
@@ -82,10 +87,10 @@ class CoOp(nn.Module):
         return x
 
     def get_clip_text_embeddings(self):
-        gender_texts = clip.tokenize(["A face of a man.", "A face of a woman."])
-        age_texts = clip.tokenize([f"A face of a person that is {i + 1} years old." for i in range(100)])
+        gender_texts = clip.tokenize(["A face of a man.", "A face of a woman."]).to(self.device)
+        age_texts = clip.tokenize([f"A face of a person that is {i + 1} years old." for i in range(100)]).to(self.device)
         gender_age_texts = clip.tokenize([f"A face of a {gender} that is {i+1} years old."
-                             for gender in ['man', 'woman'] for i in range(100)])
+                             for gender in ['man', 'woman'] for i in range(100)]).to(self.device)
 
         gender_embeddings = self.encode_text_with_prompt(gender_texts, prompt=self.gender_prompt)  # 2 d_model
 
