@@ -37,7 +37,6 @@ class CoOp(nn.Module):
 
     @staticmethod
     def build_attention_mask(context_length):
-        # lazily create causal attention mask, with full attention between the vision tokens
         # pytorch uses additive attention mask; fill with -inf
         mask = torch.empty(context_length, context_length)
         mask.fill_(float("-inf"))
