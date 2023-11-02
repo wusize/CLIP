@@ -60,7 +60,7 @@ class CoOp(nn.Module):
         return x
 
     @property
-    def device(self)
+    def device(self):
         return next(self.parameters()).device
     
 
@@ -160,3 +160,23 @@ class YourDataset(Dataset):
 
     def __getitem__(self, item):
         pass
+
+
+
+if __name__ == "__main__":
+    model = CoOp()
+    from time import time
+    tik = time()
+    out2 = model.model.encode_text(clip.tokenize("A photo of a woman").cuda())
+    for i in range(100):
+        out2 = model.model.encode_text(clip.tokenize("A photo of a woman").cuda())
+    tok = time()
+    print(f"Standard time: {(tok - tik) / 100}")
+    for i in range(100):
+        out1 = model.encode_text_fast(clip.tokenize("A photo of a woman").cuda())
+    tik = time()
+    print(f"Fast time: {(tik - tok)/100}")
+
+    out1 = F.normalize(out1, dim=-1)
+    out2 = F.normalize(out2, dim=-1)
+    print(out1 @ out2.T)
